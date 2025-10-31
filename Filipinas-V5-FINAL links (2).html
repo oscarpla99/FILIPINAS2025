@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filipinas 2025 - Adri, Eric, Oscar</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>✈️</text></svg>">
+    <meta name="theme-color" content="#50e3c2">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Quicksand', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8ffae, #43c6ac, #f8ffae 100%);
+            color: #333d1d;
+            min-height: 100vh;
+        }
+        .container { max-width: 500px; margin: 0 auto; padding: 15px 8px 100px 8px; }
+        @media (min-width: 700px) { .container { max-width: 900px; padding: 20px 40px 100px 40px; } }
+        
+        .nav-tabs { 
+            display: flex; 
+            gap: 5px; 
+            margin-bottom: 20px; 
+            overflow-x: auto; 
+            padding: 8px; 
+            background: rgba(255,255,255,0.7); 
+            border-radius: 12px;
+            flex-wrap: wrap;
+        }
+        .nav-btn { 
+            padding: 11px 16px; 
+            border: none; 
+            background: #fffdea; 
+            color: #36a95e; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            white-space: nowrap; 
+            font-size: 0.95em;
+            transition: 0.3s;
+        }
+        .nav-btn.priority {
+            background: linear-gradient(90deg, #50e3c2, #ffd452);
+            color: white;
+            font-size: 1.05em;
+            font-weight: 700;
+        }
+        .nav-btn.active { background: linear-gradient(90deg, #50e3c2, #ffd452); color: white; box-shadow: 0 4px 12px rgba(80, 227, 194, 0.4); }
+        .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .header { 
+            text-align: center; 
+            background: linear-gradient(90deg, #50e3c2, #ffd452); 
+            padding: 30px 20px; 
+            border-radius: 15px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 4px 20px rgba(80, 227, 194, 0.4);
+        }
+        .header h1 { font-size: 2.2em; margin: 0 0 8px 0; color: #21412c; letter-spacing: 1px; }
+        .header p { font-size: 0.97em; color: #21412c; margin: 5px 0; }
+        .viajeros { display: flex; justify-content: center; gap: 12px; margin-top: 15px; flex-wrap: wrap; }
+        .viajero { background: white; padding: 8px 16px; border-radius: 8px; font-weight: 600; color: #36a95e; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        
+        /* CONTADOR CON SEGUNDOS - ESTÁTICO */
+        .counter-section {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 20px rgba(255, 126, 95, 0.3);
+            text-align: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+        .counter-label { font-size: 0.9em; font-weight: 600; opacity: 0.9; margin-bottom: 10px; }
+        .counter-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .counter-box {
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .counter-number { font-size: 1.6em; font-weight: 700; }
+        .counter-unit { font-size: 0.7em; opacity: 0.9; margin-top: 2px; }
+        .counter-emoji { font-size: 2.5em; margin-bottom: 10px; }
+        .counter-message { font-size: 1.1em; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        
+        .info-card { 
+            background: #f6fff7; 
+            border-radius: 12px; 
+            padding: 15px; 
+            margin-bottom: 15px; 
+            box-shadow: 0 2px 8px #93f9c3; 
+            border-left: 4px solid #50e3c2;
+        }
+        .card-title { font-size: 1.15em; color: #3cb878; margin-bottom: 12px; font-weight: 700; }
+        
+        /* DAYS ACCORDION */
+        .day-accordion {
+            background: #fffdea;
+            border: 2px solid #ffd452;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(255, 212, 82, 0.3);
+        }
+        .day-header {
+            padding: 15px;
+            background: linear-gradient(90deg, #50e3c2, #ffd452);
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+        }
+        .day-header:hover { background: linear-gradient(90deg, #43b8a3, #ffb84d); transform: translateX(2px); }
+        .day-content { padding: 15px; display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s; }
+        .day-content.active { display: block; max-height: 2000px; }
+        .day-activity { margin: 10px 0; padding: 12px; background: #f0fff2; border-radius: 8px; border-left: 4px solid #3cb878; }
+        .day-activity strong { color: #36a95e; }
+        
+        /* CHECKLIST ITEMS */
+        .checklist-item, .packing-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #fffdea;
+            border-radius: 8px;
+            margin: 7px 0;
+            transition: 0.2s;
+        }
+        .checklist-item:hover, .packing-item:hover { background: #fffacd; }
+        .checklist-item input, .packing-item input { width: 20px; height: 20px; margin-right: 12px; cursor: pointer; }
+        .checklist-item label, .packing-item label { cursor: pointer; flex: 1; }
+        .checklist-item input:checked + label, .packing-item input:checked + label { text-decoration: line-through; color: #aaa; }
+        .remove-btn { background: #ff6b6b; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8em; }
+        .remove-btn:hover { background: #ff5252; }
+        
+        /* NOTAS */
+        .note-area { margin-bottom: 15px; }
+        .note-input { width: 100%; padding: 10px; border: 2px solid #50e3c2; border-radius: 8px; font-family: 'Quicksand'; font-size: 1em; resize: vertical; min-height: 120px; }
+        
+        /* HERRAMIENTAS */
+        .tool-section {
+            background: linear-gradient(90deg, #50e3c2 10%, #ffd452 90%);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 12px rgba(80, 227, 194, 0.3);
+        }
+        .tool-label { font-size: 1.05em; color: white; margin-bottom: 12px; font-weight: 700; display: block; }
+        
+        /* CONVERSOR RESPONSIVE */
+        .calc-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .calc-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+        .calc-input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: 2px solid white;
+            font-size: 0.95em;
+            text-align: right;
+            background: white;
+            min-width: 0;
+        }
+        .calc-symbol {
+            color: white;
+            font-weight: 700;
+            font-size: 1em;
+            min-width: 25px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        @media (min-width: 700px) {
+            .calc-container {
+                flex-direction: row;
+                align-items: center;
+                gap: 8px;
+            }
+            .calc-row {
+                flex: 1;
+                margin: 0;
+            }
+        }
+        
+        /* RULETA */
+        .ruleta-section {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        .ruleta-btn {
+            background: linear-gradient(90deg, #f093fb, #f5576c);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(245, 87, 108, 0.3);
+            transition: 0.3s;
+            margin-bottom: 15px;
+        }
+        .ruleta-btn:hover { transform: scale(1.05); box-shadow: 0 6px 15px rgba(245, 87, 108, 0.4); }
+        .ruleta-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .ruleta-result {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ruleta-name {
+            font-size: 3em;
+            font-weight: 700;
+            background: linear-gradient(90deg, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* DICCIONARIO ACORDEÓN */
+        .dic-accordion {
+            background: #fffdea;
+            border: 2px solid #50e3c2;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .dic-header {
+            padding: 15px;
+            background: linear-gradient(90deg, #50e3c2, #ffd452);
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+        }
+        .dic-header:hover { background: linear-gradient(90deg, #43b8a3, #ffb84d); }
+        .dic-content { padding: 15px; display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s; }
+        .dic-content.active { display: block; max-height: 1500px; }
+        .dic-item {
+            padding: 10px;
+            margin: 8px 0;
+            background: #f0fff2;
+            border-radius: 6px;
+            border-left: 4px solid #3cb878;
+            font-size: 0.9em;
+        }
+        .dic-es { color: #333; font-weight: 600; }
+        .dic-en { color: #666; margin: 3px 0; }
+        .dic-tl { color: #3cb878; font-weight: 600; }
+        
+        /* CHECKLIST ACORDEÓN */
+        .category-accordion {
+            background: #fffdea;
+            border: 2px solid #ffd452;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .category-header {
+            padding: 15px;
+            background: linear-gradient(90deg, #50e3c2, #ffd452);
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .category-content { padding: 15px; display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s; }
+        .category-content.active { display: block; max-height: 1000px; }
+        
+        /* ALERTAS */
+        .alert-banner {
+            background: linear-gradient(135deg, #ff7e5f, #ff6b6b);
+            color: white;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid #ff4444;
+        }
+        .alert-title { font-weight: 700; font-size: 1.1em; margin-bottom: 8px; }
+        .alert-item { margin: 6px 0; padding-left: 20px; }
+        .alert-item::before { content: "⚠️ "; margin-left: -18px; margin-right: 8px; }
+        
+        /* BOTONES */
+        .btn-primary { 
+            background: linear-gradient(90deg, #50e3c2, #ffd452); 
+            color: white; 
+            padding: 13px 22px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 0.98em;
+            display: inline-block;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(80, 227, 194, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(80, 227, 194, 0.4); }
+        .btn-block { display: block; width: 100%; margin-bottom: 12px; text-align: center; }
+        
+        /* FOOTER */
+        .footer { 
+            text-align: center; 
+            color: #21412c; 
+            margin-top: 40px; 
+            font-size: 0.9em;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+        }
+        
+        /* LINKS */
+        a { color: #36a95e; text-decoration: none; font-weight: 600; }
+        a:hover { text-decoration: underline; }
+        
+        /* WEATHER */
+        .weather-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .weather-link {
+            background: #fffdea;
+            color: #27cfa2;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            flex: 1;
+            min-width: 110px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .weather-link:hover { background: #ffe5b4; transform: translateY(-2px); }
+        
+        /* DIC TABLE */
+        .dic-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin-bottom: 20px; }
+        .dic-table th, .dic-table td { border-bottom: 1px solid #ddd; text-align: left; padding: 12px; }
+        .dic-table th { background: #50e3c2; color: white; font-weight: 700; }
+        .dic-table tr:nth-child(even) { background: #fff9e6; }
+        
+        /* GALERIA */
+        .gallery-section {
+            background: #f6fff7;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px dashed #50e3c2;
+        }
+        .gallery-link { 
+            display: block; 
+            background: linear-gradient(90deg, #50e3c2, #ffd452);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 10px 0;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .gallery-link:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(80, 227, 194, 0.4); }
+        .photo-suggestions {
+            background: #fffdea;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 0.95em;
+        }
+        .photo-item { padding: 6px 0; }
+        .photo-item::before { content: "📸 "; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✈️ Filipinas 2025</h1>
+            <p>15 Noviembre - 2 Diciembre</p>
+            <div class="viajeros">
+                <div class="viajero">🧑 Adri</div>
+                <div class="viajero">👨 Eric</div>
+                <div class="viajero">🧔 Oscar</div>
+            </div>
+        </div>
+
+        <div class="counter-section" id="counterSection"></div>
+
+        <!-- NAVEGACIÓN -->
+        <div class="nav-tabs">
+            <button class="nav-btn priority active" onclick="switchTab('itinerario', this)">📅 Itinerario</button>
+            <button class="nav-btn priority" onclick="switchTab('herramientas', this)">🛠️ Herramientas</button>
+            <button class="nav-btn priority" onclick="switchTab('frases', this)">📚 Frases</button>
+            <button class="nav-btn priority" onclick="switchTab('info', this)">ℹ️ Info</button>
+            <button class="nav-btn" onclick="switchTab('checklist', this)">✅ Checklist</button>
+            <button class="nav-btn" onclick="switchTab('notas', this)">📝 Notas</button>
+            <button class="nav-btn" onclick="switchTab('fotos', this)">📸 Fotos</button>
+        </div>
+
+        <!-- TAB: ITINERARIO (CONTENIDO COMPLETO ORIGINAL) -->
+        <div id="itinerario" class="tab-content active">
+            <div class="info-card">
+                <div class="card-title">📅 Timeline Completo del Viaje</div>
+                <p style="font-size: 0.95em; color: #555; margin-bottom: 15px;">3 viajeros: Adri, Eric, Oscar | Ruta: Manila → Coron → El Nido → Siargao → Manila → Barcelona</p>
+            </div>
+
+            <!-- DÍA 1 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <span>📍 15 Nov: Barcelona → Manila (vía Kuwait)</span>
+                    <span>▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-activity"><strong>✈️ 14:25 (BCN):</strong> Salida Kuwait Airways KU136 desde Barcelona Terminal 2, Puerta Y55. Arriba 3 horas antes del vuelo. Clase turista, Airbus A330-900neo. Referencia: 9EGB73</div>
+                    <div class="day-activity"><strong>🛬 22:20 (KWI):</strong> Llegada a Kuwait International Airport Terminal 4. Desfase horario +2h respecto a Barcelona.</div>
+                    <div class="day-activity"><strong>🔄 Escala Kuwait:</strong> Aproximadamente 2-4 horas. Cambio de moneda a PHP si lo necesitas, descanso en lounge o terminal.</div>
+                    <div class="day-activity"><strong>🧳 Checklist vuelo:</strong> Pasaporte, boarding pass impreso, maletas, charger, medicinas anti-mareo, ropa cómoda, documentación confirmación.</div>
+                    <div class="day-activity"><strong>💡 Consejos:</strong> Duerme en el avión, bebe agua frecuentemente, estira piernas en escala, mantén pasaporte seguro.</div>
+                </div>
+            </div>
+
+            <!-- DÍA 2 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <span>🏙️ 16 Nov: Llegada Manila & Yamato Hostel</span>
+                    <span>▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-activity"><strong>⏰ Mañana:</strong> Llegada a Manila Ninoy Aquino Airport (MNL). Inmigración, aduanas, recogida equipaje (~45 minutos).</div>
+                    <div class="day-activity"><strong>🚕 Traslado:</strong> Taxi/Grab al hostel (~200-300 PHP, ~30 min desde aeropuerto). Negociar o usar app.</div>
+                    <div class="day-activity"><strong>🏨 Hotel:</strong> Yamato Hostel, 66 Don B. Hernandez, Pasay, Manila. Check-in 14:00-16:00. Confirmación: 6922805039 | PIN: 4549</div>
+                    <div class="day-activity"><strong>🌅 Tarde/Noche:</strong> Paseo por Pasay, Roxas Boulevard (famosa zona turística). Cena en restaurante local, aclimatación.</div>
+                    <div class="day-activity"><strong>⚡ Importante:</strong> Descansa bien, vuelo muy temprano mañana (07:10). Compra agua, snacks, tarjeta SIM local si lo necesitas.</div>
+                </div>
+            </div>
+
+            <!-- DÍA 3 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <span>🌴 17 Nov: Manila → Coron (Busuanga)</span>
+                    <span>▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-activity"><strong>🕐 07:10 (MNL):</strong> Vuelo Cebgo DG6045, Terminal doméstico Manila. Referencia: QWCKGX. Clase turista.</div>
+                    <div class="day-activity"><strong>🛬 08:25 (USU):</strong> Llegada Busuanga (Francisco B. Reyes Airport), zona de Coron, Palawan. Vuelo corto (1h 15m).</div>
+                    <div class="day-activity"><strong>🚕 Traslado Busuanga → Coron:</strong> 30-40 km, ~45-60 minutos. Opciones: autobús local (150-200 PHP, lento), taxi/Grab (400-600 PHP, cómodo), transfer hotel.</div>
+                    <div class="day-activity"><strong>🏨 Hotel:</strong> Jewel Tourist Inn, National Highway Barangay Poblacion 6, Coron. Check-in 14:00-20:00. (Confirmación: 5091204261 | PIN: 1026)</div>
+                    <div class="day-activity"><strong>🌅 Tarde:</strong> Paseo por puerto de Coron (muy pintoresco). Puesta de sol, cena con vista al mar. Relax, descansa antes del tour intenso.</div>
+                </div>
+            </div>
+
+            <!-- DÍA 4-6 KEELOOMA -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <span>🏝️ 18-20 Nov: Island Hopping Keelooma 3D2N (Lo mejor del viaje)</span>
+                    <span>▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-activity"><strong>📍 Ruta:</strong> Coron (salida puerto 12:30) → Islas Linapacan → Culion → El Nido (llegada ~13:00-14:00 día 20)</div>
+                    <div class="day-activity"><strong>🚤 Día 1 (18 Nov):</strong> Salida 12:30 desde puerto Coron. Viaje en traditional bangka (bote robusto de madera). Llegada primeras islas de Linapacan. Snorkel en arrecifes VÍRGENES con peces tropicales, corales intactos, agua cristalina. Playas de arena blanca desiertas. Noche en kubo tradicional (abierto, bajo techo paja, mosquitero). Desayuno, almuerzo buffet, cena incluida.</div>
+                    <div class="day-activity"><strong>🌊 Día 2 (19 Nov):</strong> TODO el día exploración. 2-3 islas diferentes según condiciones. Snorkel profundo en spots de clase mundial. Visita a Culion (isla con historia). Almuerzo tipo buffet local. Puesta de sol desde el barco. Noche kubo tradicional en nueva isla base.</div>
+                    <div class="day-activity"><strong>⛵ Día 3 (20 Nov):</strong> Mañana/mediodía. Último snorkel opcional (si condiciones). Navegación final hacia El Nido. Llegada ~13:00-14:00. Despedida del grupo.</div>
+                    <div class="day-activity"><strong>📦 Packing Keelooma:</strong> Dry bag impermeable (crítico), traje de baño x2, toalla personal, protector solar SPF50+ (aplicar cada 2h), gorro/sombrero, gafas sol, chanclas, zapatos arrecife (IMPRESCINDIBLES), ropa manga larga (protección UV + mosquitos), linterna, repelente mosquitos, medicinas: anti-mareo, paracetamol, anti-diarrea, antihistamínico, documento identidad, dinero PHP, cámara en bolsa estanca.</div>
+                    <div class="day-activity"><strong>💡 Tips:</strong> Duerme bien antes, come ligero, hidrátate constantemente, respeta fauna marina (no toques corales), sigue instrucciones capitán, guarda energía para fotos, lleva power bank si tienes cámara.</div>
+                </div>
+            </div>
+
+            <!-- DÍA 7 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <span>🏖️ 20 Nov: Noche Hadefe Cottages, El Nido</span>
+                    <span>▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-activity"><strong>🏨 Hotel:</strong> Hadefe Cottages, Caalan Beach, Barangay Masagana, El Nido, Palawan. Check-in 14:00 (llegada tour ~13:00-14:00). Confirmación: 6899466664 | PIN: 5999</div>
+                    <div class="day-activity"><strong>🌅 Tarde:</strong> Ducha bien merecida tras 3 días de tour. Relax total, disfruta vistas al mar desde cabaña. Masaje tailandés local (opcional, ~200-400 PHP, 1h). Cena en restaurante cercano.</div>
+                    <div class="day-activity"><strong>😴 Nota:</strong> Estás cansado pero eufórico. Duerme bien, recupera energías para próximos 5 días de improvisación.</div>
+                </div>
+            </div>
+
+            <!-- DÍA 8-12 PALAWAN -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <span>🌊 21-25 Nov: Improvisación en Palawan (Tours flexibles)</span>
+                    <span>▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-activity"><strong>📍 Base:</strong> El Nido. Alojamiento flexible (busca hostels/cottages económicos para 4 noches más, ~800-2000 PHP/noche).</div>
+                    <div class="day-activity"><strong>🎫 Tours disponibles (elige 3-4 en 5 días):</strong> <br>• Tour A (Big Lagoon + Small Lagoon): Kayak en lagunas turquesas, snorkel, 6-8h, 1000-1200 PHP<br>• Tour B (Corong-Corong + Shimizu): Playas, snorkel, puesta de sol, 4-6h, 900-1100 PHP<br>• Tour C (Secret Beach + Helicopter Island): Playas semi-escondidas, exploración cuevas, 6-8h, 1200-1500 PHP<br>• Tour D (Miniloc Island): Resort premium, piscina natural, snorkel clase mundial, 6-8h, 1200-1500 PHP</div>
+                    <div class="day-activity"><strong>🍽️ Comidas/Costos:</strong> Desayuno 150-300 PHP | Almuerzo 200-400 PHP | Cena 300-600 PHP. Pescado fresco en puerto RECOMENDADO. Bebidas: 50-150 PHP c/u.</div>
+                    <div class="day-activity"><strong>🎯 Actividades extras:</strong> Paseo pueblo El Nido, compras souvenirs, tiendas artesanía, fotos atardecer, yoga en playa, reuniones viajeros, café local con vistas.</div>
+                    <div class="day-activity"><strong>💡 Estrategia:</strong> Resuelve día a día con otros mochileros, negocia precios puerto, sé flexible con clima (posible lluvia tropical), deja 1-2 días sin plan para descansar.</div>
+                </div>
+            </div>
+
+            <!-- DÍA 13 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <span>✈️ 26 Nov: Vuelo Palawan → Siargao (Dos escalas)</span>
+                    <span>▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-activity"><strong>🕐 10:05 (PPS):</strong> Vuelo Philippine Airlines o Air Juan desde Puerto Princesa. Llegada Cebu 11:25 (1h 5m).</div>
+                    <div class="day-activity"><strong>⏱️ Escala Cebu (3h 25m):</strong> 11:25-14:50. Come en restaurante aeropuerto, compra snacks, descansa terminal, carga dispositivos.</div>
+                    <div class="day-activity"><strong>🕐 14:50 (CEB):</strong> Vuelo Cebgo DG6859 hacia Siargao. Llegada Sayak Airport (IAO) 16:00 (1h 10m). Referencia: IJZ8UJ</div>
+                    <div class="day-activity"><strong>🚕 Traslado Aeropuerto → Cloud 9:</strong> 15-20 km, ~30-45 minutos. Tuktuk compartido (150-250 PHP), tuktuk privado (400-600 PHP), motorbike (200-300 PHP).</div>
+                    <div class="day-activity"><strong>🌅 Tarde/Noche:</strong> Llega Cloud 9 ~17:00-18:00. Relax, ducha, observa surfers al atardecer (Cloud 9 es spot famoso mundial). Cena local, duerme temprano.</div>
+                </div>
+            </div>
+
+            <!-- DÍA 14 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <span>🏝️ 27 Nov: Tri-Island Hopping (Guyam-Daku-Naked)</span>
+                    <span>▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-activity"><strong>🕐 08:00-16:00:</strong> Tour típico 6-8 horas. Desayuna en alojamiento 06:30, traslado puerto 07:30.</div>
+                    <div class="day-activity"><strong>🏝️ Guyam Island (~30 min barco):</strong> Isla pequeña privada, cabaña local, snorkel en arena blanca, peces coloridos. Parada: 1,5-2h.</div>
+                    <div class="day-activity"><strong>🏝️ Daku Island (~45 min barco):</strong> Isla más grande, montañosa, ALMUERZO BUFFET (arroz, viandas, vegetales, bebidas). Snorkel profundo, fauna marina rica. Parada: 3-4h (incluye comida).</div>
+                    <div class="day-activity"><strong>🏝️ Naked Island (~50 min barco):</strong> Atolón pequeño hermoso, fotos icónicas, snorkel rápido. Parada: 1,5-2h.</div>
+                    <div class="day-activity"><strong>💰 Costo:</strong> 900-1200 PHP por persona. Incluye: barco, guía, almuerzo buffet, bebidas, equipo snorkel básico. NO incluye: aletas (se alquilan ~100-150 PHP), propinas (~200-300 PHP sugerido).</div>
+                    <div class="day-activity"><strong>📦 Llevar:</strong> Protector solar (reaplica cada 2h), gorro, gafas, chanclas, toalla, cámara estanca, dinero PHP extra, agua, medicinas anti-mareo/paracetamol.</div>
+                </div>
+            </div>
+
+            <!-- DÍA 15 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <span>🚕 28 Nov: Excursión al Norte de Siargao</span>
+                    <span>▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-activity"><strong>🎯 Destinos norte:</strong> Pilar (snorkel tranquilo, ~45 min) | Magpupungko (piscinas naturales rocosas) | Santa Monica (playas tranquilas) | Alegria (más remoto, menos turistas) | Burgos/Pacifico (playas salvajes, extremo norte)</div>
+                    <div class="day-activity"><strong>🚗 Transporte opciones:</strong><br>1. Moto alquiler: 400-600 PHP/día (libertad total, carretera con baches, casco obligatorio)<br>2. Tuktuk/Van privada: 1,500-2,500 PHP todo el día (más seguro, chofer)<br>3. Viaje grupo hostel: 500-800 PHP (social, itinerario fijo)</div>
+                    <div class="day-activity"><strong>🗺️ Ruta sugerida:</strong> 08:30 salida → Pilar/Magpupungko (1-2h exploración) → Almuerzo local → Santa Monica/Alegria (exploración playa) → Regreso 17:30.</div>
+                    <div class="day-activity"><strong>🏊 Magpupungko Rock Pools destacado:</strong> Piscinas naturales entre rocas volcánicas con agua salada cálida. Fotos hermosas. Entrada: ~50 PHP.</div>
+                </div>
+            </div>
+
+            <!-- DÍA 16 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <span>🏝️ 29 Nov: Island Hopping Norte (A confirmar in situ)</span>
+                    <span>▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-activity"><strong>📌 FLEXIBLE - Confirma día 28 por mañana:</strong> Tours norte menos frecuentes que sur. Depende disponibilidad barcas locales.</div>
+                    <div class="day-activity"><strong>🏝️ Islas probables (si disponible):</strong><br>• Bucas Grande: Cueva submarina (tunel subacuático), snorkel avanzado, experiencia única<br>• Sohoton Cove: Laguna interior con ecosistema singular, playas escondidas<br>• Otras pequeñas islas frente Santa Monica/Alegria</div>
+                    <div class="day-activity"><strong>💰 Costo estimado:</strong> 1,200-1,500 PHP por persona (si tour organizado).</div>
+                    <div class="day-activity"><strong>💡 Alternativa:</strong> Si no hay tours norte organizados, quédate en zona norte (Santa Monica/Alegria) con time libre, snorkel local, o regresa a General Luna con actividades tranquilas.</div>
+                </div>
+            </div>
+
+            <!-- DÍA 17 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <span>☀️ 30 Nov: Último Día en Siargao (RELAX)</span>
+                    <span>▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-activity"><strong>🌅 Mañana (hasta 13:00):</strong> Desayuna tranquilamente. Paseo final por General Luna, café local con vistas, compras últimos souvenirs, fotos despedida, masaje tailandés (200-400 PHP, 1h).</div>
+                    <div class="day-activity"><strong>🚕 13:00:</strong> Traslado Sayak Airport (tuktuk 500-800 PHP, ~30-45 min). Llega 13:30-13:45 para vuelo 15:00.</div>
+                    <div class="day-activity"><strong>✈️ 15:00:</strong> Check-in, embarque rápido. Zona pequeña aeropuerto rural, sin delays normales.</div>
+                </div>
+            </div>
+
+            <!-- DÍA 18 -->
+            <div class="day-accordion">
+                <div class="day-header" onclick="toggleDay(this)">
+                    <span>✈️ 1-2 Dic: Regreso a Barcelona (Vuelos + escalas)</span>
+                    <span>▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-activity"><strong>🕐 15:00-16:05:</strong> Vuelo Cebgo DG6854 Siargao (IAO) → Cebu (CEB). Referencia: TKHVSW</div>
+                    <div class="day-activity"><strong>⏱️ Escala Cebu 1h (16:05-17:05):</strong> Cambio rápido entre terminales, café/agua, usa baño.</div>
+                    <div class="day-activity"><strong>🕐 17:05-18:35:</strong> Vuelo Cebu Air 5J558 Cebu (CEB) → Manila (MNL). Referencia: TKHVSW</div>
+                    <div class="day-activity"><strong>⏱️ Manila libre 4h 10m (18:35-22:45):</strong> OPCIÓN 1 (recomendado): Quédate aeropuerto MNL. Ducha, cena, descanso lounge. OPCIÓN 2: Taxi a Makati centro (~200-300 PHP), paseo rápido, regresa 20:00 al aeropuerto. Más riesgo tráfico.</div>
+                    <div class="day-activity"><strong>🕐 22:45-04:15+1:</strong> Vuelo INTERNACIONAL Kuwait Airways KU418 Manila (MNL) → Kuwait (KWI). 10h 30m. Referencia: 9EGB73. Duerme todo lo posible.</div>
+                    <div class="day-activity"><strong>⏱️ Kuwait escala 3h 15m (04:15-07:30):</strong> Acceso lounge Kuwait Airways si tienes. Ducha, desayuno, descanso.</div>
+                    <div class="day-activity"><strong>🕐 07:30-13:45:</strong> Vuelo Kuwait Airways KU135 Kuwait (KWI) → Barcelona (BCN). 8h 15m. Referencia: 9EGB73. Prepárate llegada.</div>
+                    <div class="day-activity"><strong>🏠 13:45 (BCN):</strong> Llegada Terminal 2 Barcelona. Recogida equipaje, inmigración, aduanas. Tren RENFE R2 a Vilassar de Dalt (~50 min, 3,50€) o taxi (~50-70€, 45-60 min).</div>
+                    <div class="day-activity"><strong>🎉 ¡A CASA!</strong> Fin del viaje. Guarda recuerdos, fotos, amigos nuevos. ¡Lo hiciste!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: HERRAMIENTAS -->
+        <div id="herramientas" class="tab-content">
+            <!-- CONVERSOR -->
+            <div class="tool-section">
+                <label class="tool-label">💱 Conversor EUR ↔ PHP ↔ USD</label>
+                <div class="calc-container">
+                    <div class="calc-row">
+                        <input type="number" id="eurinput" class="calc-input" placeholder="EUR" oninput="updateAllCurrencies()">
+                        <span class="calc-symbol">=</span>
+                    </div>
+                    <div class="calc-row">
+                        <input type="number" id="phpinput" class="calc-input" placeholder="PHP" oninput="updateAllCurrencies()">
+                        <span class="calc-symbol">=</span>
+                    </div>
+                    <div class="calc-row">
+                        <input type="number" id="usdinput" class="calc-input" placeholder="USD" oninput="updateAllCurrencies()">
+                    </div>
+                </div>
+                <div style="font-size: 0.85em; color: white; margin-top: 10px; text-align: center;">1 EUR = 65 PHP | 1 EUR = 1.10 USD (aprox.)</div>
+            </div>
+
+            <!-- WEATHER -->
+            <div class="tool-section">
+                <label class="tool-label">🌤️ Previsión Meteorológica</label>
+                <div class="weather-links">
+                    <a class="weather-link" href="https://www.meteoblue.com/es/tiempo/semana/manila_filipinas_1701668" target="_blank">Manila 🏙️</a>
+                    <a class="weather-link" href="https://www.meteoblue.com/es/tiempo/semana/corón_filipinas_1716834" target="_blank">Coron 🌴</a>
+                    <a class="weather-link" href="https://www.meteoblue.com/es/tiempo/semana/el-nido_filipinas_1713917" target="_blank">El Nido 🏝️</a>
+                    <a class="weather-link" href="https://www.meteoblue.com/es/tiempo/semana/siargao-island_filipinas_1686882" target="_blank">Siargao 🏄</a>
+                    <a class="weather-link" href="https://www.meteoblue.com/es/tiempo/semana/ciudad-de-kuwait_kuwait_285787" target="_blank">Kuwait ✈️</a>
+                </div>
+            </div>
+
+            <!-- RULETA DE LA SUERTE -->
+            <div class="ruleta-section">
+                <label class="tool-label">🎲 ¡Ruleta de la Suerte!</label>
+                <button class="ruleta-btn" id="rouletteBtn" onclick="spinRoulette()">🎲 ¡Girar ruleta!</button>
+                <div class="ruleta-result" id="rouletteResult">
+                    <div style="font-size: 1.2em; color: #999;">Pulsa el botón para girar...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: FRASES (NUEVAS - ACORDEONES) -->
+        <div id="frases" class="tab-content">
+            <div class="info-card">
+                <div class="card-title">📚 Diccionario Completo 60+ Frases</div>
+                <p style="font-size: 0.9em;">Pulsa cada categoría para desplegar</p>
+            </div>
+
+            <!-- SALUDOS -->
+            <div class="dic-accordion">
+                <div class="dic-header" onclick="toggleDic(this)">
+                    <span>🤝 Saludos y Despedidas</span>
+                    <span>▼</span>
+                </div>
+                <div class="dic-content">
+                    <div class="dic-item">
+                        <div class="dic-es">Hola / ¿Cómo estás?</div>
+                        <div class="dic-en">Hello / How are you?</div>
+                        <div class="dic-tl">Kumusta? / Kamusta ka?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Buenos días</div>
+                        <div class="dic-en">Good morning</div>
+                        <div class="dic-tl">Magandang umaga</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Buenas tardes</div>
+                        <div class="dic-en">Good afternoon</div>
+                        <div class="dic-tl">Magandang hapon</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Buenas noches</div>
+                        <div class="dic-en">Good evening / Good night</div>
+                        <div class="dic-tl">Magandang gabi</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Qué hay de nuevo?</div>
+                        <div class="dic-en">What's new?</div>
+                        <div class="dic-tl">Anong balita?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Estoy bien</div>
+                        <div class="dic-en">I'm fine / I'm good</div>
+                        <div class="dic-tl">Mabuti naman</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Y tú?</div>
+                        <div class="dic-en">And you?</div>
+                        <div class="dic-tl">Ikaw naman?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Adiós / Hasta luego</div>
+                        <div class="dic-en">Goodbye / See you later</div>
+                        <div class="dic-tl">Paalam / Hanggang sa muli</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Cuídate</div>
+                        <div class="dic-en">Take care</div>
+                        <div class="dic-tl">Ingat ka</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Nos vemos / Hasta pronto</div>
+                        <div class="dic-en">See you / See you soon</div>
+                        <div class="dic-tl">Kita kits / Hanggang sa malapit</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Bienvenido/a</div>
+                        <div class="dic-en">Welcome</div>
+                        <div class="dic-tl">Mabuhay</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¡Viva! / ¡Que vivas!</div>
+                        <div class="dic-en">Cheers! / Long live!</div>
+                        <div class="dic-tl">Mabuhay!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CORTESÍA -->
+            <div class="dic-accordion">
+                <div class="dic-header" onclick="toggleDic(this)">
+                    <span>🙏 Cortesía y Agradecimiento</span>
+                    <span>▼</span>
+                </div>
+                <div class="dic-content">
+                    <div class="dic-item">
+                        <div class="dic-es">Gracias</div>
+                        <div class="dic-en">Thank you</div>
+                        <div class="dic-tl">Salamat</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Muchas gracias</div>
+                        <div class="dic-en">Thank you very much</div>
+                        <div class="dic-tl">Maraming salamat</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">De nada</div>
+                        <div class="dic-en">You're welcome</div>
+                        <div class="dic-tl">Walang anuman</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Por favor</div>
+                        <div class="dic-en">Please</div>
+                        <div class="dic-tl">Pakiusap / Pakisimple</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Puedo...?</div>
+                        <div class="dic-en">Could I...? / May I...?</div>
+                        <div class="dic-tl">Pwede ba akong...?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Podrías...?</div>
+                        <div class="dic-en">Could you...?</div>
+                        <div class="dic-tl">Pwede mo ba akong...?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Disculpa / Perdón</div>
+                        <div class="dic-en">Sorry / Excuse me</div>
+                        <div class="dic-tl">Paumanhin / Excuse po</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">No hay problema</div>
+                        <div class="dic-en">No problem</div>
+                        <div class="dic-tl">Walang problema / Okay lang</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Está bien</div>
+                        <div class="dic-en">It's okay / That's fine</div>
+                        <div class="dic-tl">Okay lang / Sige</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRESENTACIONES -->
+            <div class="dic-accordion">
+                <div class="dic-header" onclick="toggleDic(this)">
+                    <span>👤 Presentaciones y Charla</span>
+                    <span>▼</span>
+                </div>
+                <div class="dic-content">
+                    <div class="dic-item">
+                        <div class="dic-es">¿Cuál es tu nombre?</div>
+                        <div class="dic-en">What's your name?</div>
+                        <div class="dic-tl">Ano ang pangalan mo?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Mi nombre es...</div>
+                        <div class="dic-en">My name is...</div>
+                        <div class="dic-tl">Ang pangalan ko ay...</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Encantado/a</div>
+                        <div class="dic-en">Nice to meet you</div>
+                        <div class="dic-tl">Masaya kang makilala</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿De dónde eres?</div>
+                        <div class="dic-en">Where are you from?</div>
+                        <div class="dic-tl">Saan ka galing?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Soy de España</div>
+                        <div class="dic-en">I'm from Spain</div>
+                        <div class="dic-tl">Galing ako sa Espanya</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Cuántos años tienes?</div>
+                        <div class="dic-en">How old are you?</div>
+                        <div class="dic-tl">Ilang taong gulang ka?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Tengo... años</div>
+                        <div class="dic-en">I'm... years old</div>
+                        <div class="dic-tl">Ako ay... taong gulang</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Cuál es tu profesión?</div>
+                        <div class="dic-en">What do you do?</div>
+                        <div class="dic-tl">Ano ang iyong trabaho?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Soy... (profesor, ingeniero, etc.)</div>
+                        <div class="dic-en">I'm a... (teacher, engineer, etc.)</div>
+                        <div class="dic-tl">Ako ay... (guro, inhinyero, etc.)</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Hablas español?</div>
+                        <div class="dic-en">Do you speak Spanish?</div>
+                        <div class="dic-tl">Marunong ka bang mag-Español?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">No hablo tagalog</div>
+                        <div class="dic-en">I don't speak tagalog</div>
+                        <div class="dic-tl">Hindi ako marunong mag-Tagalog</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Hablas inglés?</div>
+                        <div class="dic-en">Do you speak English?</div>
+                        <div class="dic-tl">Marunong ka bang mag-Ingles?</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMIDA -->
+            <div class="dic-accordion">
+                <div class="dic-header" onclick="toggleDic(this)">
+                    <span>🍽️ Restaurant y Comida</span>
+                    <span>▼</span>
+                </div>
+                <div class="dic-content">
+                    <div class="dic-item">
+                        <div class="dic-es">¿Dónde está el restaurante?</div>
+                        <div class="dic-en">Where is the restaurant?</div>
+                        <div class="dic-tl">Nasaan ang kainan?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Puedo ver el menú?</div>
+                        <div class="dic-en">Can I see the menu?</div>
+                        <div class="dic-tl">Puwede bang makita ang menu?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Tengo hambre</div>
+                        <div class="dic-en">I'm hungry</div>
+                        <div class="dic-tl">Gutom na ako</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Tengo sed</div>
+                        <div class="dic-en">I'm thirsty</div>
+                        <div class="dic-tl">Uhaw na ako</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Cuál es la especialidad?</div>
+                        <div class="dic-en">What is the specialty?</div>
+                        <div class="dic-tl">Ano ang specialty ninyo?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Recomendaciones</div>
+                        <div class="dic-en">Recommendations</div>
+                        <div class="dic-tl">Inirerekomenda ko</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Esto pica/es picante?</div>
+                        <div class="dic-en">Is this spicy?</div>
+                        <div class="dic-tl">Maanghang ba ito?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">No muy picante, por favor</div>
+                        <div class="dic-en">Not too spicy, please</div>
+                        <div class="dic-tl">Hindi sobrang maanghang, pakiusap</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¡Delicioso! / ¡Está muy bueno!</div>
+                        <div class="dic-en">Delicious! / This is very good!</div>
+                        <div class="dic-tl">Masarap! / Napaka-sarap nito!</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">No me gusta esto</div>
+                        <div class="dic-en">I don't like this</div>
+                        <div class="dic-tl">Ayoko nito</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Quiero más / Uno más</div>
+                        <div class="dic-en">I want more / One more</div>
+                        <div class="dic-tl">Gusto ko ng isa pa / Isa pa nga</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Estoy lleno/a</div>
+                        <div class="dic-en">I'm full</div>
+                        <div class="dic-tl">Busog na ako</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">La cuenta, por favor</div>
+                        <div class="dic-en">The bill, please</div>
+                        <div class="dic-tl">Bill, pakiusap / Ang bayad, pakiusap</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Cuánto cuesta?</div>
+                        <div class="dic-en">How much is it?</div>
+                        <div class="dic-tl">Magkano ito?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Aceptas tarjeta de crédito?</div>
+                        <div class="dic-en">Do you accept credit card?</div>
+                        <div class="dic-tl">Tumatanggap ba ng credit card?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Agua</div>
+                        <div class="dic-en">Water</div>
+                        <div class="dic-tl">Tubig</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Cerveza / Vino</div>
+                        <div class="dic-en">Beer / Wine</div>
+                        <div class="dic-tl">Serbesa / Alak</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Café / Té</div>
+                        <div class="dic-en">Coffee / Tea</div>
+                        <div class="dic-tl">Kape / Tsaa</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRANSPORTE -->
+            <div class="dic-accordion">
+                <div class="dic-header" onclick="toggleDic(this)">
+                    <span>🚕 Transporte</span>
+                    <span>▼</span>
+                </div>
+                <div class="dic-content">
+                    <div class="dic-item">
+                        <div class="dic-es">¿Dónde está la parada de taxi?</div>
+                        <div class="dic-en">Where is the taxi stand?</div>
+                        <div class="dic-tl">Nasaan ang taksi?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Necesito un taxi</div>
+                        <div class="dic-en">I need a taxi</div>
+                        <div class="dic-tl">Kailangan ko ng taxi</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿A cuánto es a...?</div>
+                        <div class="dic-en">How much to...?</div>
+                        <div class="dic-tl">Magkano papuntang...?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¡Para aquí! / ¡Detente!</div>
+                        <div class="dic-en">Stop here! / Stop!</div>
+                        <div class="dic-tl">Para po dito! / Huminto!</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">A la derecha</div>
+                        <div class="dic-en">Turn right</div>
+                        <div class="dic-tl">Sa kanan</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">A la izquierda</div>
+                        <div class="dic-en">Turn left</div>
+                        <div class="dic-tl">Sa kaliwa</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Sigue recto</div>
+                        <div class="dic-en">Go straight</div>
+                        <div class="dic-tl">Direcho lang / Tuwad</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Jeepney (vehículo típico)</div>
+                        <div class="dic-en">Jeepney</div>
+                        <div class="dic-tl">Jeepney / Dyip</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Dónde está la parada de jeepney?</div>
+                        <div class="dic-en">Where is the jeepney stop?</div>
+                        <div class="dic-tl">Nasaan ang sakayan ng jeepney?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Cuánto cuesta el pasaje?</div>
+                        <div class="dic-en">How much is the fare?</div>
+                        <div class="dic-tl">Magkano ang pamasahe?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Voy a...</div>
+                        <div class="dic-en">I'm going to...</div>
+                        <div class="dic-tl">Pupunta ako sa...</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Aeropuerto</div>
+                        <div class="dic-en">Airport</div>
+                        <div class="dic-tl">Airport / Paliparan</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Hotel</div>
+                        <div class="dic-en">Hotel</div>
+                        <div class="dic-tl">Hotel</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Estación de tren</div>
+                        <div class="dic-en">Train station</div>
+                        <div class="dic-tl">Train station / Estasyon ng tren</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPRAS -->
+            <div class="dic-accordion">
+                <div class="dic-header" onclick="toggleDic(this)">
+                    <span>🛍️ Compras</span>
+                    <span>▼</span>
+                </div>
+                <div class="dic-content">
+                    <div class="dic-item">
+                        <div class="dic-es">¿Cuánto cuesta esto?</div>
+                        <div class="dic-en">How much is this?</div>
+                        <div class="dic-tl">Magkano ito?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Es muy caro</div>
+                        <div class="dic-en">It's too expensive</div>
+                        <div class="dic-tl">Mahal naman</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Puedo regatear?</div>
+                        <div class="dic-en">Can I negotiate?</div>
+                        <div class="dic-tl">Pwede bang tumawad?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Tienes...?</div>
+                        <div class="dic-en">Do you have...?</div>
+                        <div class="dic-tl">Meron ba kayong...?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Está en oferta?</div>
+                        <div class="dic-en">Is this on sale?</div>
+                        <div class="dic-tl">Sale ba ito?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Solo este</div>
+                        <div class="dic-en">Just this one</div>
+                        <div class="dic-tl">Ito na lang</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Me gusta esto</div>
+                        <div class="dic-en">I like this</div>
+                        <div class="dic-tl">Gusto ko ito</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">No me gusta</div>
+                        <div class="dic-en">I don't like this</div>
+                        <div class="dic-tl">Ayoko nito</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Qué talla?</div>
+                        <div class="dic-en">What size?</div>
+                        <div class="dic-tl">Anong size?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Puedo probármelo?</div>
+                        <div class="dic-en">Can I try it on?</div>
+                        <div class="dic-tl">Pwede bang sumukat?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Dónde se paga?</div>
+                        <div class="dic-en">Where do I pay?</div>
+                        <div class="dic-tl">Saan ang bayaran?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Tarjeta de crédito</div>
+                        <div class="dic-en">Credit card</div>
+                        <div class="dic-tl">Credit card</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Dinero en efectivo</div>
+                        <div class="dic-en">Cash</div>
+                        <div class="dic-tl">Pera / Kuwarta</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIRECCIONES -->
+            <div class="dic-accordion">
+                <div class="dic-header" onclick="toggleDic(this)">
+                    <span>📍 Direcciones y Lugares</span>
+                    <span>▼</span>
+                </div>
+                <div class="dic-content">
+                    <div class="dic-item">
+                        <div class="dic-es">¿Dónde está...?</div>
+                        <div class="dic-en">Where is...?</div>
+                        <div class="dic-tl">Nasaan ang...?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Dónde está el baño?</div>
+                        <div class="dic-en">Where is the bathroom?</div>
+                        <div class="dic-tl">Nasaan ang banyo?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Dónde está la playa?</div>
+                        <div class="dic-en">Where is the beach?</div>
+                        <div class="dic-tl">Nasaan ang dagat / beach?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Estoy perdido/a</div>
+                        <div class="dic-en">I'm lost</div>
+                        <div class="dic-tl">Nawawala ako</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Está cerca?</div>
+                        <div class="dic-en">Is it close?</div>
+                        <div class="dic-tl">Malapit ba?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Está lejos?</div>
+                        <div class="dic-en">Is it far?</div>
+                        <div class="dic-tl">Malayo ba?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Farmacia / Hospital</div>
+                        <div class="dic-en">Pharmacy / Hospital</div>
+                        <div class="dic-tl">Pharmacy / Ospital</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Mercado / Tienda</div>
+                        <div class="dic-en">Market / Store</div>
+                        <div class="dic-tl">Merkado / Tindahan</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Iglesia</div>
+                        <div class="dic-en">Church</div>
+                        <div class="dic-tl">Simbahan</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Calle / Avenida</div>
+                        <div class="dic-en">Street / Avenue</div>
+                        <div class="dic-tl">Kalye / Abenida</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Plaza / Parque</div>
+                        <div class="dic-en">Plaza / Park</div>
+                        <div class="dic-tl">Plaza / Parke</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EMERGENCIAS -->
+            <div class="dic-accordion">
+                <div class="dic-header" onclick="toggleDic(this)">
+                    <span>🆘 Emergencias y Salud</span>
+                    <span>▼</span>
+                </div>
+                <div class="dic-content">
+                    <div class="dic-item">
+                        <div class="dic-es">¡Ayuda!</div>
+                        <div class="dic-en">Help!</div>
+                        <div class="dic-tl">Tulong!</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¡Emergencia!</div>
+                        <div class="dic-en">Emergency!</div>
+                        <div class="dic-tl">Emergency! / Emerhensya!</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Necesito un médico</div>
+                        <div class="dic-en">I need a doctor</div>
+                        <div class="dic-tl">Kailangan ko ng doktor</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Estoy enfermo/a</div>
+                        <div class="dic-en">I'm sick</div>
+                        <div class="dic-tl">May sakit ako</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Me duele...</div>
+                        <div class="dic-en">It hurts... / I have pain in...</div>
+                        <div class="dic-tl">Sakit ang...</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Fiebre / Dolor de cabeza</div>
+                        <div class="dic-en">Fever / Headache</div>
+                        <div class="dic-tl">Lagnat / Sakit ng ulo</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Dónde está el hospital?</div>
+                        <div class="dic-en">Where is the hospital?</div>
+                        <div class="dic-tl">Nasaan ang ospital?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Llama a emergencias (ambulancia)</div>
+                        <div class="dic-en">Call an ambulance</div>
+                        <div class="dic-tl">Tawagan ang ambulansya</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Estoy envenenado/a</div>
+                        <div class="dic-en">I'm poisoned</div>
+                        <div class="dic-tl">Nakalason ako</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Necesito medicinas</div>
+                        <div class="dic-en">I need medicine</div>
+                        <div class="dic-tl">Kailangan ko ng gamot</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Alergia</div>
+                        <div class="dic-en">Allergy</div>
+                        <div class="dic-tl">Alerhiya</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NÚMEROS -->
+            <div class="dic-accordion">
+                <div class="dic-header" onclick="toggleDic(this)">
+                    <span>⏰ Números, Hora y Tiempo</span>
+                    <span>▼</span>
+                </div>
+                <div class="dic-content">
+                    <div class="dic-item">
+                        <div class="dic-es">¿Qué hora es?</div>
+                        <div class="dic-en">What time is it?</div>
+                        <div class="dic-tl">Anong oras na?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Son las... (horas)</div>
+                        <div class="dic-en">It's... o'clock</div>
+                        <div class="dic-tl">Alas... na / ... o'clock na</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Cero / Uno / Dos... / Diez</div>
+                        <div class="dic-en">Zero / One / Two... / Ten</div>
+                        <div class="dic-tl">Zero / Isa / Dalawa... / Sampung</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Hoy / Mañana / Ayer</div>
+                        <div class="dic-en">Today / Tomorrow / Yesterday</div>
+                        <div class="dic-tl">Ngayon / Bukas / Kahapon</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Lunes / Martes / Miércoles...</div>
+                        <div class="dic-en">Monday / Tuesday / Wednesday...</div>
+                        <div class="dic-tl">Lunes / Martes / Mierkules...</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Enero / Febrero / Marzo...</div>
+                        <div class="dic-en">January / February / March...</div>
+                        <div class="dic-tl">Enero / Pebrero / Marso...</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Mañana por la mañana</div>
+                        <div class="dic-en">Tomorrow morning</div>
+                        <div class="dic-tl">Bukas ng umaga</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Semana / Mes / Año</div>
+                        <div class="dic-en">Week / Month / Year</div>
+                        <div class="dic-tl">Linggo / Buwan / Taon</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FRASES COMUNES -->
+            <div class="dic-accordion">
+                <div class="dic-header" onclick="toggleDic(this)">
+                    <span>💭 Frases Comunes y Expresiones</span>
+                    <span>▼</span>
+                </div>
+                <div class="dic-content">
+                    <div class="dic-item">
+                        <div class="dic-es">¿Entiendes?</div>
+                        <div class="dic-en">Do you understand?</div>
+                        <div class="dic-tl">Nakakaintindi ka ba?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">No entiendo</div>
+                        <div class="dic-en">I don't understand</div>
+                        <div class="dic-tl">Hindi ako nakakaintindi</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">¿Puedes repetir, por favor?</div>
+                        <div class="dic-en">Can you repeat, please?</div>
+                        <div class="dic-tl">Pwede mo bang ulit, pakiusap?</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Hablo poco tagalog</div>
+                        <div class="dic-en">I speak a little tagalog</div>
+                        <div class="dic-tl">Kaunti lang ang aking tagalog</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Sí / No</div>
+                        <div class="dic-en">Yes / No</div>
+                        <div class="dic-tl">Oo / Hindi</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Puede ser / Quizás</div>
+                        <div class="dic-en">Maybe / Perhaps</div>
+                        <div class="dic-tl">Baka / Posible</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Te quiero / Te amo</div>
+                        <div class="dic-en">I love you</div>
+                        <div class="dic-tl">Mahal kita</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Amigo/a</div>
+                        <div class="dic-en">Friend</div>
+                        <div class="dic-tl">Kaibigan</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Eres muy amable</div>
+                        <div class="dic-en">You're very kind</div>
+                        <div class="dic-tl">Napaka-bait mo</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Eres muy guapo/a</div>
+                        <div class="dic-en">You're very handsome/beautiful</div>
+                        <div class="dic-tl">Napaka-ganda / Napaka-pogi mo</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Eres muy inteligente</div>
+                        <div class="dic-en">You're very smart</div>
+                        <div class="dic-tl">Napaka-talino mo</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLAYAS -->
+            <div class="dic-accordion">
+                <div class="dic-header" onclick="toggleDic(this)">
+                    <span>🏖️ Playas y Actividades Acuáticas</span>
+                    <span>▼</span>
+                </div>
+                <div class="dic-content">
+                    <div class="dic-item">
+                        <div class="dic-es">Playa</div>
+                        <div class="dic-en">Beach</div>
+                        <div class="dic-tl">Dagat / Beach</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Snorkel / Bucear</div>
+                        <div class="dic-en">Snorkel / Scuba dive</div>
+                        <div class="dic-tl">Snorkel / Tukad</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Pez / Coral</div>
+                        <div class="dic-en">Fish / Coral</div>
+                        <div class="dic-tl">Isda / Koral</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Isla</div>
+                        <div class="dic-en">Island</div>
+                        <div class="dic-tl">Pulo / Island</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Arena / Agua salada</div>
+                        <div class="dic-en">Sand / Salt water</div>
+                        <div class="dic-tl">Buhangin / Alat na tubig</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Ola / Olas</div>
+                        <div class="dic-en">Wave / Waves</div>
+                        <div class="dic-tl">Alon / Mga alon</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Surf / Tabla de surf</div>
+                        <div class="dic-en">Surfing / Surfboard</div>
+                        <div class="dic-tl">Surfing / Surf board</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Protector solar / Bloqueador</div>
+                        <div class="dic-en">Sunscreen / Sunblock</div>
+                        <div class="dic-tl">Sunscreen / Proteksyon sa araw</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Gafas de sol / Sombrero</div>
+                        <div class="dic-en">Sunglasses / Hat</div>
+                        <div class="dic-tl">Shades / Salamin sa araw, Sombrero</div>
+                    </div>
+                    <div class="dic-item">
+                        <div class="dic-es">Aletas / Escarpines</div>
+                        <div class="dic-en">Fins / Water shoes</div>
+                        <div class="dic-tl">Flipper / Reef shoes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: INFO -->
+        <div id="info" class="tab-content">
+            <!-- ALERTAS -->
+            <div class="alert-banner">
+                <div class="alert-title">⚠️ Avisos Importantes del Ministerio de Exteriores</div>
+                <div class="alert-item">Pasaporte con validez MÍNIMO 6 meses desde fecha regreso (crítico)</div>
+                <div class="alert-item">Vacunas recomendadas: Hepatitis A/B, tétanos, tifoidea, dengue (consulta médico)</div>
+                <div class="alert-item">Dengue y paludismo prevalentes (especialmente Palawan junio-diciembre). Usa repelente mosquitos religiosamente</div>
+                <div class="alert-item">Aumentos de robo de pasaportes. Guarda en lugar seguro SIEMPRE</div>
+                <div class="alert-item">NUNCA bebas agua del grifo. Solo embotellada. Riesgo tifoidea/cólera</div>
+                <div class="alert-item">Extrema precaución con enfermedades de transmisión sexual / VIH en aumento</div>
+                <div class="alert-item">Registra eArrival Card obligatoriamente (72h antes viaje): https://etravel.gov.ph/</div>
+                <div class="alert-item">Tu estancia es máximo 30 días sin visado. Si necesitas más, solicita prórroga antes que expire</div>
+            </div>
+
+            <!-- eARRIVAL CARD -->
+            <div class="info-card">
+                <div class="card-title">🎫 eArrival Card - OBLIGATORIO</div>
+                <p><strong>¿Qué es?</strong> Formulario digital de entrada a Filipinas (reemplaza antiguo One Health Pass). Todos los viajeros deben completarlo.</p>
+                <p><strong>¿Cuándo?</strong> Dentro de 72 horas ANTES de llegada a Filipinas.</p>
+                <p><strong>¿Dónde?</strong> <a href="https://etravel.gov.ph/" target="_blank">https://etravel.gov.ph/ (completamente GRATIS)</a></p>
+                <p><strong>Datos que piden:</strong> Nombre, apellidos, fecha nacimiento, pasaporte, nacionalidad, email, teléfono, vuelo de llegada (número, fecha, aerolínea), hotel destino, info de salud breve.</p>
+                <p><strong>Resultado:</strong> Código QR digital. Guarda screenshot. Muestra en móvil o impreso en aeropuerto.</p>
+                <p><strong>Costo:</strong> 0€ (GRATIS). Evita webs que cobren.</p>
+                <div style="margin: 15px 0;"></div>
+                <button onclick="window.open('https://etravel.gov.ph/', '_blank')" class="btn-primary btn-block">Ir a eArrival Card Oficial</button>
+            </div>
+
+            <!-- DOCUMENTACIÓN OFICIAL -->
+            <div class="info-card">
+                <div class="card-title">📄 Documentación Oficial Recomendada</div>
+                <p><strong>✓ Pasaporte:</strong> Validez mínima 6 meses. Guarda fotocopia en nube (Google Drive/email).</p>
+                <p><strong>✓ Visado:</strong> No necesario para españoles, 30 días sin visa. Si necesitas más, pide prórroga ante Bureau of Immigration ANTES de expirar.</p>
+                <p><strong>✓ Vuelos confirmados:</strong> Imprime o guarda digital de todos los boarding passes. Autoridades pueden pedir confirmación de salida de Filipinas.</p>
+                <p><strong>✓ Hoteles confirmados:</strong> Comprobante reserva Booking/plataforma. Autoridades pueden pedir comprobante hospedaje.</p>
+                <p><strong>✓ Billete de salida:</strong> Imprimir billete último vuelo de vuelta es recomendado (a veces lo piden en inmigración).</p>
+                <p><strong>✓ Seguro de viaje:</strong> Altamente recomendado. Guarda póliza digital.</p>
+                <p><strong>✓ Contactos emergencia:</strong> Embajada España Manila: +63-2-8810-3801</p>
+            </div>
+
+            <!-- VACUNAS Y SALUD -->
+            <div class="info-card">
+                <div class="card-title">💉 Vacunas y Salud Recomendadas</div>
+                <p><strong>Obligatorias:</strong> Ninguna (no hay requisito legal de entrada).</p>
+                <p><strong>Altamente recomendadas (consulta médico tropical):</strong><br>
+                • Hepatitis A & B<br>
+                • Tétanos<br>
+                • Fiebre tifoidea<br>
+                • Dengue (existe vacuna en España, consulta especialista)<br>
+                • Encefalitis japonesa (si visitas zonas rurales)<br>
+                • Paludismo (más en Palawan Mindanao, riesgo moderado)</p>
+                <p><strong>Prevención sin vacuna:</strong> Repelente mosquitos IMPRESCINDIBLE (dengue, paludismo). Aplica constantemente, especialmente atardecer/noche.</p>
+                <p><strong>Centro vacunación internacional:</strong> Contacta 2-4 semanas antes de viaje.</p>
+            </div>
+
+            <!-- CONTACTOS -->
+            <div class="info-card">
+                <div class="card-title">📞 Contactos de Emergencia y Útiles</div>
+                <p><strong>🇪🇸 Embajada España Manila:</strong> <a href="tel:+63288103801">+63-2-8810-3801</a> (horario laboral)</p>
+                <p><strong>🚨 Emergencias Filipinas:</strong> <a href="tel:911">911</a> (policía, bomberos, ambulancia)</p>
+                <p><strong>🚔 Policía:</strong> <a href="tel:117">117</a></p>
+                <p><strong>🚑 Ambulancia:</strong> <a href="tel:118">118</a></p>
+                <p><strong>📱 Consulado Cebu:</strong> +63-32-2541001 (si estás en zona Visayas)</p>
+                <p><strong>🏥 Farmacia/Farmacéutico:</strong> Pregunta en hotel, abundan en ciudades.</p>
+            </div>
+
+            <!-- VUELOS Y HOTELES -->
+            <div class="info-card">
+                <div class="card-title">✈️ Vuelos Reservados</div>
+                <p><strong>15 Nov (Ida):</strong> <a href="https://www.edreams.es/travel/secure/#tripdetails/td=ABitJW1BtKmfNeWWuDngLFbjjgD6eSUo9NHgS1bnvBdIVrp1vBN2-s2kpI8MrNulCMaYO7oNH4UgC6i8ffhnUtWhRDE8uQha5ZfhEN1jS3fn3JPqM-0aGkDKuTGA8gOkwJ_0kxbKfihQmSzzZsN5Ytmy0mTOiCxl_1ju7lCkmeHY9c1VPv4dhGt6qSJn-Giz8f3Dse-XtcQH3lCEcCzLuaC2uTb0yQd9lsNhJRQk5I80UQn77rGtVHYxyBYjfEosw4GmUYkj-9HuGPeLm797VZWzyr9MZJuuO2rnmdaL2AuRY5LxT4aQwCbNVcugtfwcuofEtUqP63N4YEv-ZC1RQw" target="_blank">KU136 BCN→Manila (vía Kuwait)</a></p>
+
+                <p><strong>17 Nov:</strong> <a href="https://www.edreams.es/travel/secure/#tripdetails/td=iVX5s_Co61X5t7yQQMStfXk5f8aooDo1DaMUEteoORogSupn_7vDlX50EZ3KvSbZa4eHGnIlX_Yhwjxg7_r9EHgirkzwqTw63nwBTHQR_oYBRnTCZaaKmGa0NzjgYInGFY3xoVYN1zSiWw8_GXlhSHqicQqtJz2qAhDB-dAB77GbYM0M_0YD04SnfFHTUxSOYD6D9OVHDIdeZ-J52rvZWJuY8zrW8W4yc2DB6iP227ZNcC9cI_WlglrHjVfqi6haJ8X1lkLr6yxu-e0cpBGWW6AmHom13vZEhKiydn4OwfOlcVCnuyAxcgOO0KWg3w1PdFNlEYt7Fed59TdjWqvmSA" target="_blank">DG6045 Manila→Coron</a></p>
+
+                <p><strong>26 Nov:</strong> <a href="https://www.edreams.es/travel/secure/#tripdetails/td=fAyIL_4Fj4Z35Qi_bu1rhHdRnNXGCdaB6fyhzBpWjzIgbO-n5payO_p8jM7LXUZy2K4v6dFKE6XgVK41NY6LEGxrEJoNO7H16X45D_fIGaqKfUxpnrR6eY9Oesr1DdzcvwW4ChcvtNJCKtIC_8a1OxhlQPMbuRIHcAYWbBP7FS4ZpiEoFfDELZyODiDMP6uZOuZYsuCsvcep1z1H7YUeRqciZPs60FScOj7jSbdgrld3lbNFYTSVv5M13e3Y6rm1QH0VdkMzrHbxKJkryUmRI8TOdNqjO7otFYmnXOJl_9a04uAk61stbIFskqCfa1F3dBlvruGUgd8DQ4l_h3-2Sw" target="_blank">Palawan→Siargao (escalas)</a></p>
+
+                <p><strong>1-2 Dic (Vuelta):</strong> <a href="https://www.edreams.es/travel/secure/#tripdetails/td=ABitJW1BtKmfNeWWuDngLFbjjgD6eSUo9NHgS1bnvBdIVrp1vBN2-s2kpI8MrNulCMaYO7oNH4UgC6i8ffhnUtWhRDE8uQha5ZfhEN1jS3fn3JPqM-0aGkDKuTGA8gOkwJ_0kxbKfihQmSzzZsN5Ytmy0mTOiCxl_1ju7lCkmeHY9c1VPv4dhGt6qSJn-Giz8f3Dse-XtcQH3lCEcCzLuaC2uTb0yQd9lsNhJRQk5I80UQn77rGtVHYxyBYjfEosw4GmUYkj-9HuGPeLm797VZWzyr9MZJuuO2rnmdaL2AuRY5LxT4aQwCbNVcugtfwcuofEtUqP63N4YEv-ZC1RQw" target="_blank">KU418+KU135 Manila→BCN (vía Kuwait)</a></p>
+
+            </div>
+
+            <div class="info-card">
+                <div class="card-title">🏨 Hoteles Reservados</div>
+                <p><strong>16 Nov Manila:</strong> <a href="https://secure.booking.com/confirmation.es.html?label=per101js-10CAEoggI46AdIClgDaEaIAQGYATO4ARfIAQzYAQPoAQH4AQGIAgGoAgG4AqmHj8gGwAIB0gIkN2Y0NTNkMjgtNTE0Yi00MmFhLWI3MWYtZDRlYTI0ZGUxYWRl2AIB4AIB&sid=572377cdd8681e8c993c518ba94dd72a&aid=2440492&auth_key=APJ4B0C5Y1VEpFwH&source=mytrips" target="_blank">Yamato Hostel (Conf: 6922805039 | PIN: 4549)</a></p>
+
+                <p><strong>17 Nov Coron:</strong> <a href="https://secure.booking.com/confirmation.es.html?label=per101js-10CAEoggI46AdIClgDaEaIAQGYATO4ARfIAQzYAQPoAQH4AQGIAgGoAgG4AqmHj8gGwAIB0gIkN2Y0NTNkMjgtNTE0Yi00MmFhLWI3MWYtZDRlYTI0ZGUxYWRl2AIB4AIB&sid=572377cdd8681e8c993c518ba94dd72a&aid=2440492&auth_key=0Jopsk0Np8tVT8IG&source=mytrips" target="_blank">Jewel Tourist Inn (Conf: 5091204261 | PIN: 1026)</a></p>
+
+                <p><strong>20 Nov El Nido:</strong> <a href="https://secure.booking.com/confirmation.es.html?label=per101js-10CAEoggI46AdIClgDaEaIAQGYATO4ARfIAQzYAQPoAQH4AQGIAgGoAgG4AqmHj8gGwAIB0gIkN2Y0NTNkMjgtNTE0Yi00MmFhLWI3MWYtZDRlYTI0ZGUxYWRl2AIB4AIB&sid=572377cdd8681e8c993c518ba94dd72a&aid=2440492&auth_key=uBhniffUrcnepx82&source=mytrips" target="_blank">Hadefe Cottages (Conf: 6899466664 | PIN: 5999)</a></p>
+
+            </div>
+
+            <div class="info-card">
+                <div class="card-title">🎫 Tours Reservados</div>
+                <p><strong>18-20 Nov (Tour Completo):</strong> Keelooma 3D2N Island Hopping (Coron→El Nido)</p>
+            </div>
+
+            <div class="footer">
+                <p>Versión V5 FINAL | Filipinas 2025 | 3 viajeros: Adri, Eric, Oscar</p>
+                <p style="font-size: 0.85em; margin-top: 20px;">🌴 Filipinas 2025 | Itinerario Completo | Herramientas integradas | Info Oficial ✨</p>
+            </div>
+        </div>
+
+        <!-- TAB: CHECKLIST (UNIFICADO) -->
+        <div id="checklist" class="tab-content">
+            <!-- DOCUMENTOS -->
+            <div class="category-accordion">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <span>📄 Documentos</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content active">
+                    <div id="docs-container"></div>
+                    <button class="btn-primary btn-block" onclick="addDocumentItem()">+ Agregar documento</button>
+                </div>
+            </div>
+
+            <!-- PACKING -->
+            <div class="category-accordion">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <span>🎒 Packing</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content">
+                    <div id="packing-container"></div>
+                    <button class="btn-primary btn-block" onclick="addPackingItem()">+ Agregar item</button>
+                </div>
+            </div>
+
+            <button class="btn-primary btn-block" onclick="limpiarTodoChecklist()" style="background: linear-gradient(90deg, #ff7e5f, #ff6b6b); margin-top: 20px;">🗑️ Limpiar TODO</button>
+        </div>
+
+        <!-- TAB: NOTAS (NOTA ÚNICA GENERAL) -->
+        <div id="notas" class="tab-content">
+            <div class="info-card"><div class="card-title">📝 Notas Personales</div></div>
+            <div class="note-area">
+                <textarea id="generalNote" class="note-input" placeholder="Escribe tus notas aquí. Se guardarán automáticamente..." onchange="saveGeneralNote()"></textarea>
+            </div>
+        </div>
+
+        <!-- TAB: FOTOS -->
+        <div id="fotos" class="tab-content">
+            <div class="info-card">
+                <div class="card-title">📸 Galería de Recuerdos (Google Drive/Photos)</div>
+            </div>
+
+            <div class="gallery-section">
+                <p style="margin-bottom: 10px; font-weight: 600;">📁 Guardar fotos compartidas:</p>
+                <input type="text" id="photoLink" placeholder="Pega aquí el link de Google Drive o Google Photos compartido" style="width: 100%; padding: 10px; border: 2px solid #50e3c2; border-radius: 8px; margin-bottom: 10px;">
+                <button class="btn-primary btn-block" onclick="guardarLinkFotos()">Guardar link</button>
+                <a id="photoLinkDisplay" href="" target="_blank" class="gallery-link" style="display: none;">Ver galería de fotos compartida</a>
+            </div>
+
+            <div class="info-card">
+                <div class="card-title">📷 Sugerencias de Mejores Fotos por Destino</div>
+                <div class="photo-suggestions">
+                    <div class="photo-item">Manila: Torre comercial Rizal Park / Roxas Boulevard atardecer</div>
+                    <div class="photo-item">Coron: Puerto tradicional / Barcos coloridos al amanecer</div>
+                    <div class="photo-item">Linapacan (tour): Arrecife coral / Peces tropicales en snorkel</div>
+                    <div class="photo-item">Culion: Isla histórica / Ruinas antiguas</div>
+                    <div class="photo-item">El Nido: Big Lagoon turquesa / Lagunas con kayak / Puesta de sol</div>
+                    <div class="photo-item">El Nido Secret Beach: Playas semi-escondidas / Cuevas marinas</div>
+                    <div class="photo-item">Siargao Cloud 9: Surfers en ola / Atardecer playa</div>
+                    <div class="photo-item">Guyam Island: Isla privada / Islote pequeño icónico</div>
+                    <div class="photo-item">Daku Island: Montaña/vegetación / Snorkel peces</div>
+                    <div class="photo-item">Magpupungko: Piscinas rocosas naturales (fotos épicas)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FUNCIONES BASE
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function toggleDay(el) {
+            el.nextElementSibling.classList.toggle('active');
+            el.querySelector('span:last-child').textContent = el.nextElementSibling.classList.contains('active') ? '▲' : '▼';
+        }
+
+        function toggleDic(el) {
+            el.nextElementSibling.classList.toggle('active');
+            el.querySelector('span:last-child').textContent = el.nextElementSibling.classList.contains('active') ? '▲' : '▼';
+        }
+
+        function toggleCategory(el) {
+            el.nextElementSibling.classList.toggle('active');
+            el.querySelector('span:last-child').textContent = el.nextElementSibling.classList.contains('active') ? '▲' : '▼';
+        }
+
+        // CONTADOR CON SEGUNDOS - ESTÁTICO
+        function updateCounter() {
+            const viaje = new Date(2025, 10, 15, 14, 25);
+            const hoy = new Date();
+            const diff = viaje - hoy;
+            const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const segs = Math.floor((diff % (1000 * 60)) / 1000);
+
+            let emoji = '✈️';
+            let mensaje = '¡Casi está! 🎉';
+
+            if (dias > 30) {
+                emoji = '🏖️';
+                mensaje = 'Tranquilo, faltan muchos días...';
+            } else if (dias > 10) {
+                emoji = '⏰';
+                mensaje = 'Se aproxima...';
+            } else if (dias > 3) {
+                emoji = '🌴';
+                mensaje = '¡Casi estáaaa! 🎉';
+            } else if (dias > 0) {
+                emoji = '🎉';
+                mensaje = '¡MAÑANA VIAJAMOS! 🚀';
+            } else {
+                mensaje = '¡EL VIAJE HA COMENZADO! 🌊';
+                emoji = '🎊';
+            }
+
+            document.getElementById('counterSection').innerHTML = `
+                <div>
+                    <div class="counter-emoji">${emoji}</div>
+                    <div class="counter-display">
+                        <div class="counter-box"><div class="counter-number">${dias}</div><div class="counter-unit">DÍAS</div></div>
+                        <div class="counter-box"><div class="counter-number">${horas}</div><div class="counter-unit">HORAS</div></div>
+                        <div class="counter-box"><div class="counter-number">${mins}</div><div class="counter-unit">MIN</div></div>
+                        <div class="counter-box"><div class="counter-number">${segs}</div><div class="counter-unit">SEG</div></div>
+                    </div>
+                    <div class="counter-message">${mensaje}</div>
+                </div>
+            `;
+
+            setTimeout(updateCounter, 1000);
+        }
+
+        // RULETA DE LA SUERTE
+        function spinRoulette() {
+            const names = ['🧑 Adri', '👨 Eric', '🧔 Oscar'];
+            const btn = document.getElementById('rouletteBtn');
+            const result = document.getElementById('rouletteResult');
+            
+            btn.disabled = true;
+            result.innerHTML = '<div style="font-size: 1.5em; color: #667eea; font-weight: 700;">🎲 Girando...</div>';
+            
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * names.length);
+                const winner = names[randomIndex];
+                result.innerHTML = `<div class="ruleta-name">${winner}</div>`;
+                btn.disabled = false;
+                localStorage.setItem('lastRoulette', winner);
+            }, 5000);
+        }
+
+        // CONVERSOR
+        function updateAllCurrencies() {
+            const eur = parseFloat(document.getElementById('eurinput').value.replace(',', '.')) || 0;
+            const php = parseFloat(document.getElementById('phpinput').value.replace(',', '.')) || 0;
+            const usd = parseFloat(document.getElementById('usdinput').value.replace(',', '.')) || 0;
+
+            if (document.getElementById('eurinput') === document.activeElement) {
+                document.getElementById('phpinput').value = (eur * 65).toFixed(2);
+                document.getElementById('usdinput').value = (eur * 1.10).toFixed(2);
+            } else if (document.getElementById('phpinput') === document.activeElement) {
+                document.getElementById('eurinput').value = (php / 65).toFixed(2);
+                document.getElementById('usdinput').value = (php / 59.09).toFixed(2);
+            } else if (document.getElementById('usdinput') === document.activeElement) {
+                document.getElementById('eurinput').value = (usd / 1.10).toFixed(2);
+                document.getElementById('phpinput').value = (usd * 59.09).toFixed(2);
+            }
+        }
+
+        // CHECKLIST DOCUMENTOS
+        const defaultDocs = ['Pasaporte válido (6+ meses)','Visado Filipinas (no necesario)','eArrival Card (rellenar 72h antes)','Vuelos descargados','Hoteles confirmados','Tour Keelooma confirmado','Seguro de viaje','Tarjeta bancaria/crédito','Medicinas básicas','Vacunas recomendadas','Adaptador enchufe','Repelente mosquitos','Protector solar SPF50+'];
+        function loadDocuments() {
+            const c = document.getElementById('docs-container');
+            c.innerHTML = '';
+            defaultDocs.forEach((item, i) => {
+                const id = `doc_${i}`;
+                const checked = localStorage.getItem(id) === 'true' ? 'checked' : '';
+                c.innerHTML += `<div class="checklist-item"><input type="checkbox" id="${id}" ${checked} onchange="saveCheck('${id}')"><label for="${id}">${item}</label></div>`;
+            });
+        }
+        function addDocumentItem() {
+            const name = prompt('¿Qué documento quieres agregar?');
+            if (name) {
+                const id = `doc_custom_${Date.now()}`;
+                localStorage.setItem(`${id}_name`, name);
+                loadDocuments();
+            }
+        }
+        function saveCheck(id) { localStorage.setItem(id, document.getElementById(id).checked); }
+
+        // CHECKLIST PACKING
+        const defaultPacking = ['Traje de baño (x2-3)','T-shirts ligeras (x4-5)','Pantalones cortos (x2)','Ropa larga (protección UV+mosquitos)','Chanclas/sandalias','Calcetines','Pijama','Chaqueta ligera','Teléfono + cargador','Power bank','Adaptador enchufe','Auriculares','Gafas snorkel','Tubo','Zapatos arrecife','Gorro/sombrero','Gafas sol','Protector solar SPF50+','Cepillo dientes','Pasta dental','Desodorante','Champú/jabón','Toalla personal','Medicinas básicas','Repelente mosquitos','Parches antimosquitos','Mochila/bolsa impermeable','Cámara/fotos','Linterna/frontal','Libro/entretenimiento'];
+        function loadPacking() {
+            const c = document.getElementById('packing-container');
+            c.innerHTML = '';
+            defaultPacking.forEach((item, i) => {
+                const id = `pack_${i}`;
+                const checked = localStorage.getItem(id) === 'true' ? 'checked' : '';
+                c.innerHTML += `<div class="packing-item"><input type="checkbox" id="${id}" ${checked} onchange="saveCheck('${id}')"><label for="${id}">${item}</label></div>`;
+            });
+        }
+        function addPackingItem() {
+            const name = prompt('¿Qué item quieres agregar al packing?');
+            if (name) {
+                const id = `pack_custom_${Date.now()}`;
+                localStorage.setItem(`${id}_name`, name);
+                loadPacking();
+            }
+        }
+
+        function limpiarTodoChecklist() {
+            if(confirm('¿Borrar TODO el checklist (documentos + packing)?')) {
+                defaultDocs.forEach((_, i) => localStorage.removeItem(`doc_${i}`));
+                defaultPacking.forEach((_, i) => localStorage.removeItem(`pack_${i}`));
+                loadDocuments();
+                loadPacking();
+            }
+        }
+
+        // NOTAS GENERAL
+        function saveGeneralNote() {
+            const note = document.getElementById('generalNote').value;
+            localStorage.setItem('generalNote', note);
+        }
+        function loadGeneralNote() {
+            const note = localStorage.getItem('generalNote') || '';
+            document.getElementById('generalNote').value = note;
+        }
+
+        // FOTOS
+        function guardarLinkFotos() {
+            const link = document.getElementById('photoLink').value;
+            if (link) {
+                localStorage.setItem('photoLink', link);
+                const display = document.getElementById('photoLinkDisplay');
+                display.href = link;
+                display.style.display = 'block';
+                display.textContent = '📸 Ver galería de fotos compartida';
+            }
+        }
+
+        // INICIAR
+        window.addEventListener('load', () => {
+            updateCounter();
+            loadDocuments();
+            loadPacking();
+            loadGeneralNote();
+            const savedLink = localStorage.getItem('photoLink');
+            if (savedLink) {
+                document.getElementById('photoLink').value = savedLink;
+                document.getElementById('photoLinkDisplay').href = savedLink;
+                document.getElementById('photoLinkDisplay').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
